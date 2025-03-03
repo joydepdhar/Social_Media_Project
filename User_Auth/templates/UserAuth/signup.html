@@ -1,0 +1,50 @@
+{% extends "layouts/main_layout.html" %}
+
+{% load static %}
+
+{% block content %}
+<section class="mx-auto flex flex-col min-h-screen justify-center items-center px-3 bg-gradient-to-br from-blue-50 to-purple-100">
+    <section class="w-full max-w-md shadow-2xl p-6 md:p-10 bg-white rounded-2xl" data-theme="light">
+      <h2 class="text-4xl font-extrabold text-center text-purple-700 flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-purple-500">
+          <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8Z"/>
+          <path d="M12 6.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 6.5Zm0 5a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 12 11.5Z"/>
+        </svg>
+        Sign Up
+      </h2>
+      <p class="text-center mt-3 mb-7 text-gray-600">
+        Join us today and start exploring!
+      </p>
+
+      <form class="flex flex-col gap-5" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="text" class="input input-bordered w-full rounded-xl font-medium" placeholder="Username" name="username" value="{{ username | default:'' }}" required />
+
+        <input type="email" class="input input-bordered w-full rounded-xl font-medium" placeholder="Email" name="email" value="{{ email | default:'' }}" required />
+
+        <input type="password" class="input input-bordered w-full rounded-xl font-medium" placeholder="Password" name="password" minlength="6" required />
+
+        <input type="password" class="input input-bordered w-full rounded-xl font-medium" placeholder="Confirm Password" name="confPassword" minlength="6" required />
+
+        <!-- Profile Picture Upload Section -->
+        <label class="cursor-pointer flex flex-col items-center gap-2 bg-gray-100 p-3 rounded-xl border border-gray-300 hover:bg-gray-200 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 text-gray-600">
+            <path d="M19.5 4h-3.293L14.207 2.5a1 1 0 0 0-.707-.293h-2.5a1 1 0 0 0-.707.293L7.793 4H4.5A1.5 1.5 0 0 0 3 5.5v12A1.5 1.5 0 0 0 4.5 19h15a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 19.5 4ZM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2Z"/>
+          </svg>
+          <input type="file" class="hidden" name="profile_picture" accept="image/*" />
+          <span class="text-gray-700 font-medium">Upload Profile Picture</span>
+        </label>
+
+        <button class="btn w-full text-white text-lg bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 rounded-xl shadow-lg transition-all">
+          Sign Up
+        </button>
+      </form>
+
+      <p class="text-center mt-6">
+        Already have an account? 
+        <a class="text-indigo-600 font-medium hover:underline" href="{% url "user_login" %}">Log in</a>
+      </p>
+    </section>
+</section>
+{% endblock %}

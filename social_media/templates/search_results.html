@@ -1,0 +1,83 @@
+{% extends "layouts/main_layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto p-8 bg-gradient-to-br from-blue-50 to-indigo-100 shadow-xl rounded-xl mt-10">
+    <h2 class="text-4xl font-bold text-center text-gray-800 mb-6">🔎 Search Results</h2>
+
+    <!-- Search Filters -->
+    <form method="GET" action="" class="mb-6 flex flex-wrap gap-4 justify-center">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search posts..." 
+            class="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+        <select name="sort" class="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+            <option value="newest" {% if sort_by == "newest" %}selected{% endif %}>Newest First</option>
+            <option value="oldest" {% if sort_by == "oldest" %}selected{% endif %}>Oldest First</option>
+        </select>
+        <select name="media" class="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+            <option value="">All Posts</option>
+            <option value="with_images" {% if filter_media == "with_images" %}selected{% endif %}>With Images</option>
+            <option value="without_images" {% if filter_media == "without_images" %}selected{% endif %}>Without Images</option>
+        </select>
+        <button type="submit" class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition">
+            Apply Filters
+        </button>
+    </form>
+
+    {% if user_results %}
+        {% for result in user_results %}
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 mt-6 hover:shadow-2xl transition duration-300">
+                <!-- Profile Section -->
+                <div class="flex items-center space-x-4 border-b pb-4">
+                    <img src="{{ result.profile_picture }}" alt="Profile Picture"
+                        class="w-16 h-16 rounded-full border-2 border-blue-500 shadow-md object-cover hover:scale-110 transition duration-300">
+                    <div>
+                        <p class="text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300">@{{ result.user.username }}</p>
+                        <p class="text-sm text-gray-500">📅 Joined: {{ result.user.date_joined|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+
+                <!-- User Posts -->
+                <div class="mt-4">
+                    {% if result.posts %}
+                        {% for post in result.posts %}
+                            <div class="p-5 bg-gray-50 rounded-lg border border-gray-300 shadow-md mt-4 hover:bg-gray-100 transition duration-300">
+                                <p class="text-gray-700 text-lg font-medium">{{ post.text }}</p>
+                                {% if post.image %}
+                                    <img src="{{ post.image }}" alt="Post Image"
+                                        class="mt-3 w-full max-h-96 rounded-lg object-cover shadow-md hover:scale-105 transition duration-300">
+                                {% endif %}
+                                <p class="text-sm text-gray-500 mt-2">🗓️ {{ post.created_at|date:"M d, Y" }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-gray-500 mt-3 text-center italic">No posts yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if post_results %}
+        <div class="mt-10">
+            <h3 class="text-2xl font-semibold text-gray-800">📌 Posts Matching "{{ query }}"</h3>
+            {% for post in post_results %}
+                <div class="p-5 bg-white rounded-lg border border-gray-300 shadow-md mt-4 hover:bg-gray-100 transition duration-300">
+                    <p class="text-gray-700 text-lg font-medium">{{ post.text }}</p>
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="Post Image"
+                            class="mt-3 w-full max-h-96 rounded-lg object-cover shadow-md hover:scale-105 transition duration-300">
+                    {% endif %}
+                    <p class="text-sm text-gray-500 mt-2">🗓️ {{ post.created_at|date:"M d, Y" }} | ✍️ by @{{ post.user.username }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if not user_results and not post_results %}
+        <div class="text-center py-10">
+            <p class="text-gray-500 text-lg">🚫 No results found. Try searching with a different keyword.</p>
+            <img src="{% static 'images/no-results.svg' %}" alt="No Results" class="w-64 mx-auto mt-4">
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "layouts/main_layout.html" %}
+{% load static %}
+
+{% block content %}
+<section class="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
+    <div class="bg-white shadow-2xl rounded-xl p-8 w-full max-w-md">
+        <h2 class="text-3xl font-extrabold text-center text-purple-700 flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7 text-purple-500">
+                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2ZM12 18a6 6 0 1 1 6-6 6.007 6.007 0 0 1-6 6Z"/>
+                <path d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5Zm0 5a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 12 13.5Z"/>
+            </svg>
+            Login
+        </h2>
+        <p class="text-center text-gray-600 mb-6">Welcome back! Please enter your credentials.</p>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="username" class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Enter your username" required />
+            </div>
+
+            <div>
+                <input type="password" name="password" class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Enter your password" required />
+            </div>
+
+            <div class="flex justify-between items-center text-sm">
+                <a href="#" class="text-indigo-600 hover:underline">Forgot Password?</a>
+            </div>
+
+            <button class="w-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-2 rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-all">
+                Login
+            </button>
+        </form>
+        <p class="text-center text-gray-600 mt-6">
+            Don’t have an account? 
+            <a href="{% url 'user_register' %}" class="text-indigo-600 font-medium hover:underline">Register Now</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

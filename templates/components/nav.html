@@ -1,0 +1,71 @@
+{% load static %}
+
+<nav class="max-w-screen-xl mx-auto bg-gradient-to-r from-indigo-600 to-purple-800 shadow-lg p-4 flex justify-between items-center rounded-lg text-white relative">
+    <!-- Left: Logo -->
+    <div class="flex items-center space-x-3">
+        <a href="{% url 'home' %}" class="text-4xl font-extrabold tracking-wide flex items-center gap-0 transform transition hover:scale-105">
+            <span class="text-red-600 drop-shadow-2xl hover:scale-110 transition-all duration-300">S</span>
+            <span class="text-white drop-shadow-2xl hover:scale-110 transition-all duration-300">o</span>
+            <span class="text-black drop-shadow-2xl hover:scale-110 transition-all duration-300">C</span>
+            <span class="text-red-600 drop-shadow-2xl hover:scale-110 transition-all duration-300">i</span>
+            <span class="text-white drop-shadow-2xl hover:scale-110 transition-all duration-300">i</span>
+            <span class="text-black drop-shadow-2xl hover:scale-110 transition-all duration-300">a</span>
+
+        </a>
+        <button id="menu-toggle" class="lg:hidden text-white ml-4 focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Center: Search Bar -->
+    <form action="{% url 'search' %}" method="GET" class="hidden md:flex items-center bg-white rounded-full px-5 py-2 shadow-lg w-80 transition-all duration-300 hover:ring-2 hover:ring-purple-400 focus-within:ring-4">
+        <input type="text" name="q" placeholder="🔍 Search for something amazing..." class="w-full outline-none text-gray-700 bg-transparent text-lg">
+        <button type="submit" class="text-purple-600 hover:text-purple-700 transition duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"></path>
+            </svg>
+        </button>
+    </form>
+
+    <!-- Right: Auth/Profile -->
+    <div class="space-x-4 flex items-center">
+        {% if user.is_authenticated %}
+        <div class="relative group">
+            <span class="bg-white text-gray-700 px-5 py-2 rounded-md hover:bg-gray-200 transition shadow-md">
+                👋 Hello, {{ user.username }}
+            </span>
+            <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-xl rounded-lg w-44 mt-2 right-0 p-3 transition-all duration-300">
+                <li><a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-gray-100 rounded-lg transition">👤 Profile</a></li>
+                <li>
+                    <form action="{% url 'user_logout' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg transition">🚪 Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        {% else %}
+        <!-- Login & Register Buttons -->
+        <a href="{% url 'user_login' %}" class="bg-white text-purple-700 px-6 py-2 rounded-lg hover:bg-gray-200 transition shadow-lg transform hover:scale-105"> Login</a>
+        <a href="{% url 'user_register' %}" class="bg-white text-indigo-700 px-6 py-2 rounded-lg hover:bg-gray-200 transition shadow-lg transform hover:scale-105"> Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="hidden lg:hidden absolute top-16 left-0 w-full bg-white shadow-lg p-5 rounded-b-lg transition-all duration-500">
+    <ul class="space-y-5 text-lg font-medium text-gray-800">
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' %}" class="block hover:text-purple-700 transition">👤 Profile</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+<!-- JavaScript for Mobile Menu -->
+<script>
+document.getElementById('menu-toggle').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+</script>

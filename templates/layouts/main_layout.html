@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- DaisyUI & Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Toastify & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #fdfbfb, #ebedee);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-0 left-0 w-full z-50 shadow">
+        {% include "components/nav.html" %}
+    </header>
+
+    <main class="mt-20">
+    {% block content %}
+        {% endblock content %}
+</main>
+
+    {% include "components/footer.html" %}
+
+    <!-- Toastify Messages -->
+   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+{% if messages %}
+    {% for message in messages %}
+        <script>
+    Toastify({
+        text: "{{ message }}",
+        duration: 5000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        style: {
+            background: "{% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %}",
+            color: "#fff",
+            borderRadius: "8px",
+            padding: "12px 20px",
+            fontSize: "16px",
+            fontWeight: "bold",
+            textAlign: "center",
+            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)"
+        }
+    }).showToast();
+</script>
+    {% endfor %}
+{% endif %}
+
+
+</body>
+</html>
